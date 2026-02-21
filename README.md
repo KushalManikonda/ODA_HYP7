@@ -102,17 +102,12 @@ source venv/bin/activate   # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 4. Train the model
+### 4. Run the model
 
 ```bash
-python train.py
+python app.py
 ```
 
-### 5. Run inference
-
-```bash
-python predict.py
-```
 
 ---
 
