@@ -1,0 +1,13 @@
+Flask
+pymongo
+numpy
+opencv-python
+matplotlib
+scipy
+requests
+torch
+scikit-learn
+Pillow
+roboflow
+fpdf2
+twilio
