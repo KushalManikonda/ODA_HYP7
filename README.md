@@ -109,24 +109,7 @@ python app.py
 ```
 
 
----
 
-## Project Structure
-
-```
-oil-spill-detection/
-│
-├── version-1/
-├── version-2/
-├── version-3/
-│
-├── train.py
-├── predict.py
-├── requirements.txt
-└── README.md
-```
-
----
 
 ## Project Versions
 
