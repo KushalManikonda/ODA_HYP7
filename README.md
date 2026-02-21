@@ -5,7 +5,7 @@ AI-Powered Environmental Surveillance Platform
 ![Python](https://img.shields.io/badge/Python-3.8+-blue)
 ![DeepLearning](https://img.shields.io/badge/Deep%20Learning-3D%20CNN%20%2B%201D%20Model-red)
 ![Accuracy](https://img.shields.io/badge/Accuracy-96%25-brightgreen)
-![Deployment](https://img.shields.io/badge/Deployment-Vercel-black)
+
 
 ---
 
