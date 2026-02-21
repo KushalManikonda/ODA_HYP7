@@ -151,13 +151,15 @@ License
 This project is licensed under the MIT License. You are free to use, modify, and distribute with proper attribution.
 
 Contact
-Team Name: ODA Team Leader: Kushal Manikonda
+Team Name: ODA 
 
 Team Members:
-
-I Aravind
+Kushal Manikonda
+P Sai Siddharth
+I Akira Aravind
 K Sai Revanth
 D Priyansh
+
 College: Vasavi College of Engineering Hackathon: HACK YOUR PATH 7.0
 
 Mobile: +91 9959583328
