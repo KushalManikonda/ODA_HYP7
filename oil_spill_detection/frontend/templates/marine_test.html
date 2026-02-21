@@ -1,0 +1,295 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-title {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 3rem;
+        font-weight: 700;
+        background: linear-gradient(90deg, #00aaff, #0066cc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        position: relative;
+        display: inline-block;
+        left: 50%;
+        transform: translateX(-50%);
+        animation: fadeInUp 0.8s ease-out;
+    }
+
+    .page-title::after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #00aaff, transparent);
+    }
+
+    .upload-card {
+        background: rgba(255,255,255,0.05) !important;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.1) !important;
+        border-radius: 20px;
+        padding: 35px;
+        animation: fadeInUp 0.9s ease-out 0.2s both;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    }
+
+    .upload-card:hover {
+        box-shadow: 0 20px 40px rgba(0,170,255,0.2);
+    }
+
+    /* ── drag-drop zone ── */
+    .drop-zone {
+        border: 2px dashed rgba(0,170,255,0.5);
+        border-radius: 14px;
+        padding: 40px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background: rgba(0,170,255,0.03);
+        position: relative;
+    }
+
+    .drop-zone:hover,
+    .drop-zone.dragover {
+        border-color: #00aaff;
+        background: rgba(0,170,255,0.08);
+    }
+
+    .drop-zone i { font-size: 2.5rem; color: #00aaff; margin-bottom: 12px; display: block; }
+    .drop-zone p { color: rgba(255,255,255,0.7); margin: 0; }
+
+    #file-name-display {
+        margin-top: 10px;
+        font-size: 0.9rem;
+        color: #00aaff;
+    }
+
+    /* ── preview ── */
+    #preview-box { display: none; margin-top: 15px; text-align: center; }
+    #preview-img {
+        max-height: 320px;
+        width: 100%;
+        border-radius: 10px;
+        border: 1px solid rgba(0,170,255,0.3);
+        object-fit: contain;
+    }
+
+    /* ── result section ── */
+    .result-section {
+        animation: fadeInUp 0.8s ease-out;
+        margin-top: 40px;
+    }
+
+    .result-img-wrapper {
+        background: rgba(0,0,0,0.3);
+        border-radius: 14px;
+        padding: 12px;
+        border: 1px solid rgba(0,170,255,0.2);
+        text-align: center;
+    }
+
+    .result-img-wrapper img {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    /* ── detections table ── */
+    .det-table-wrapper {
+        background: rgba(255,255,255,0.04);
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.08);
+        overflow: hidden;
+    }
+
+    .det-table thead th {
+        background: rgba(0,0,0,0.35);
+        color: #00aaff;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 1rem;
+        padding: 16px 18px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .det-table tbody tr { transition: background 0.2s; }
+    .det-table tbody tr:hover { background: rgba(0,170,255,0.07); }
+    .det-table td { padding: 14px 18px; font-size: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
+
+    .conf-bar-wrap { background: rgba(255,255,255,0.08); border-radius: 20px; height: 12px; min-width: 80px; }
+    .conf-bar      { height: 12px; border-radius: 20px; background: linear-gradient(90deg,#00aaff,#0066cc); }
+
+    .label-badge {
+        display: inline-block;
+        padding: 8px 18px;
+        border-radius: 30px;
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        background: rgba(0,170,255,0.15);
+        border: 1px solid rgba(0,170,255,0.4);
+        color: #00aaff;
+        white-space: nowrap;
+        text-transform: capitalize;
+    }
+
+    .no-det {
+        text-align: center;
+        padding: 40px;
+        color: rgba(255,255,255,0.5);
+        font-size: 1.2rem;
+    }
+
+    .stat-pill {
+        display: inline-block;
+        background: rgba(0,170,255,0.15);
+        border: 1px solid rgba(0,170,255,0.3);
+        border-radius: 30px;
+        padding: 8px 22px;
+        font-size: 1rem;
+        color: #fff;
+    }
+
+    .stat-pill strong { color: #00aaff; font-size: 1.1rem; }
+</style>
+
+<div class="text-center mb-3">
+    <h1 class="page-title"><i class="fas fa-fish mr-2"></i>Marine Life Detector — Test Image</h1>
+</div>
+
+<!-- ── Upload form ──────────────────────────────────────────────────────────── -->
+<div class="upload-card">
+    <form method="POST" enctype="multipart/form-data" id="upload-form">
+        <div class="drop-zone" id="drop-zone">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p><strong>Drag &amp; drop</strong> an image here, or <strong>click to browse</strong></p>
+            <p style="font-size:0.8rem;margin-top:6px;color:rgba(255,255,255,0.4);">
+                JPG · PNG · BMP · TIFF · WEBP
+            </p>
+            <input type="file" name="file" id="file-input" accept="image/*"
+                   style="position:absolute;inset:0;opacity:0;cursor:pointer;" required>
+        </div>
+        <div id="file-name-display"></div>
+
+        <!-- Preview -->
+        <div id="preview-box">
+            <img id="preview-img" src="" alt="Preview">
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary px-5 py-2" style="font-size:1.05rem;border-radius:30px;">
+                <i class="fas fa-search mr-2"></i>Run Detection
+            </button>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary ml-3 px-4 py-2"
+               style="border-radius:30px;color:#aaa;border-color:#444;">
+                <i class="fas fa-arrow-left mr-2"></i>Back
+            </a>
+        </div>
+    </form>
+</div>
+
+<!-- ── Results ──────────────────────────────────────────────────────────────── -->
+{% if result_image is defined and result_image %}
+<div class="result-section">
+    <h3 class="text-center mb-4" style="color:#00aaff;font-size:1.8rem;font-weight:700;">
+        <i class="fas fa-binoculars mr-2"></i>Detection Results
+    </h3>
+    <div class="text-center mb-4">
+        <span class="stat-pill mr-2">File: <strong>{{ original_filename }}</strong></span>
+        <span class="stat-pill">Total Detections: <strong>{{ total }}</strong></span>
+    </div>
+
+    <!-- Full-width annotated image -->
+    <div class="result-img-wrapper mb-5">
+        <img src="{{ '/' + result_image.replace('\\', '/') }}" alt="Annotated result">
+    </div>
+
+    <!-- Detections table full width -->
+    {% if detections %}
+    <div class="det-table-wrapper mb-5">
+        <table class="table det-table mb-0">
+            <thead>
+                <tr>
+                    <th style="width:50px;">#</th>
+                    <th>Detected Animal</th>
+                    <th>Confidence</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for det in detections %}
+                {% if loop.index <= 5 %}
+                <tr>
+                    <td style="color:rgba(255,255,255,0.45);font-size:1rem;">{{ loop.index }}</td>
+                    <td><span class="label-badge">{{ det.label_name }}</span></td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="conf-bar-wrap flex-grow-1 mr-3">
+                                <div class="conf-bar" style="width:{{ (det.score * 100)|int }}%;"></div>
+                            </div>
+                            <span style="font-size:1.1rem;font-weight:700;color:#00aaff;white-space:nowrap;">
+                                {{ "%.1f"|format(det.score * 100) }}%
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="no-det mb-5">
+        <i class="fas fa-search" style="font-size:3rem;display:block;margin-bottom:14px;"></i>
+        No detections above the confidence threshold.<br>
+        <small style="color:rgba(255,255,255,0.35);font-size:1rem;">Try a clearer image or lower the score threshold.</small>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+<script>
+(function () {
+    const dropZone   = document.getElementById('drop-zone');
+    const fileInput  = document.getElementById('file-input');
+    const nameDisp   = document.getElementById('file-name-display');
+    const previewBox = document.getElementById('preview-box');
+    const previewImg = document.getElementById('preview-img');
+
+    function handleFile(file) {
+        if (!file) return;
+        nameDisp.textContent = '📎 ' + file.name;
+        const reader = new FileReader();
+        reader.onload = e => {
+            previewImg.src = e.target.result;
+            previewBox.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    fileInput.addEventListener('change', () => handleFile(fileInput.files[0]));
+
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', e => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        const file = e.dataTransfer.files[0];
+        if (file) {
+            // Manually set the file on the input
+            const dataTransfer = new DataTransfer();
+            dataTransfer.items.add(file);
+            fileInput.files = dataTransfer.files;
+            handleFile(file);
+        }
+    });
+})();
+</script>
+{% endblock %}
