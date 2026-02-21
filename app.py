@@ -99,9 +99,9 @@ SENDER_APP_PASS = "grkzmzyxpuqsqjhv"
 # =============================================================================
 # Twilio SMS credentials
 # =============================================================================
-TWILIO_ACCOUNT_SID  = "AC822e2b410e58ea3cc8631e91e50b0ae4"
-TWILIO_AUTH_TOKEN   = "0bf7f4b7c18144900363d1a8cf40393e"
-TWILIO_PHONE_NUMBER = "+18028108515"   # Twilio sender number
+TWILIO_ACCOUNT_SID  = "your_ID"
+TWILIO_AUTH_TOKEN   = "your_token"
+TWILIO_PHONE_NUMBER = "+your_number"   # Twilio sender number
 
 CONFIDENCE_THRESHOLD = 0.85
 
@@ -1224,3 +1224,4 @@ def marine_test():
 # =============================================================================
 if __name__ == '__main__':
     app.run(debug=False, port=5002)
+
