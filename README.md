@@ -156,7 +156,6 @@ Enhancements:
 * Near real-time Email alerts
 * SMS notifications to higher authorities
 * Interactive monitoring dashboard
-* Web deployment via Vercel
 
 Deployment:
 
