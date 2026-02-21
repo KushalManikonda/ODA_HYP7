@@ -48,7 +48,7 @@ Team Name: ODA
 * DeepHyperX
 * Hybrid 3D CNN Architecture
 * 1D Hamida Spectral Model
-* LinkNet (SAR Segmentation)
+* YOLOv8 
 
 ### Data Processing and Analysis
 
