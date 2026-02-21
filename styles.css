@@ -1,0 +1,107 @@
+﻿/* static/css/styles.css */
+body {
+    background-color: #f8f9fa;
+}
+
+h2 {
+    color: #343a40;
+}
+
+.navbar {
+    margin-bottom: 20px;
+}
+
+/* Dashboard Styles */
+.dashboard-container {
+    padding: 20px;
+}
+
+.welcome-section {
+    background: linear-gradient(135deg, #0061f2 0%, #00a6f2 100%);
+    color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(33, 40, 50, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.method-icon {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+    margin: 0 auto;
+}
+
+.card-title {
+    color: #363d47;
+    font-weight: 600;
+}
+
+.card-text {
+    color: #69707a;
+}
+
+.btn-primary {
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    background: linear-gradient(135deg, #0061f2 0%, #00a6f2 100%);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #0052cc 0%, #0090d9 100%);
+}
+
+.recent-activity {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(33, 40, 50, 0.15);
+}
+
+.table thead th {
+    border-top: none;
+    background-color: #f8f9fa;
+    color: #363d47;
+}
+
+.badge {
+    padding: 0.5em 1em;
+}
+
+.badge-success {
+    background-color: #00ac69;
+}
+
+.badge-warning {
+    background-color: #f4a100;
+}
+
+.badge-danger {
+    background-color: #e81500;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .col-md-6 {
+        margin-bottom: 20px;
+    }
+    
+    .welcome-section {
+        padding: 1.5rem;
+    }
+    
+    .card {
+        margin-bottom: 20px;
+    }
+}

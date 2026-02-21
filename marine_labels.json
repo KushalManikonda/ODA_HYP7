@@ -1,0 +1,14 @@
+{
+  "label_to_name": {
+    "1": "holothurian",
+    "2": "echinus",
+    "3": "scallop",
+    "4": "starfish",
+    "5": "fish",
+    "6": "corals",
+    "7": "diver",
+    "8": "cuttlefish",
+    "9": "turtle",
+    "10": "jellyfish"
+  }
+}

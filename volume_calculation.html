@@ -1,0 +1,224 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+<style>
+    .results-container {
+        background: rgba(8, 18, 35, 0.60) !important;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(0, 170, 255, 0.25) !important;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 30px;
+        animation: fadeInUp 1s ease-out;
+        box-shadow: 0 10px 30px rgba(4, 12, 26, 0.55);
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .results-container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle at center, rgba(0, 170, 255, 0.1) 0%, transparent 60%);
+        z-index: -1;
+        pointer-events: none;
+    }
+    
+    .area-display {
+        font-size: 1.8rem;
+        color: #00aaff;
+        font-weight: bold;
+        text-align: center;
+        margin: 25px 0;
+        text-shadow: 0 0 10px rgba(0, 170, 255, 0.3);
+        animation: pulse 3s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); text-shadow: 0 0 10px rgba(0, 170, 255, 0.3); }
+        50% { transform: scale(1.03); text-shadow: 0 0 15px rgba(0, 170, 255, 0.5); }
+        100% { transform: scale(1); text-shadow: 0 0 10px rgba(0, 170, 255, 0.3); }
+    }
+    
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(50px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes slideInLeft {
+        from { opacity: 0; transform: translateX(-50px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes slideInRight {
+        from { opacity: 0; transform: translateX(50px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    
+    .image-container {
+        position: relative;
+        overflow: hidden;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        transform: perspective(1000px) rotateY(0deg);
+        transition: transform 0.5s ease;
+        box-shadow: 0 15px 25px rgba(4, 12, 26, 0.65);
+    }
+    
+    .image-container:hover {
+        transform: perspective(1000px) rotateY(5deg);
+    }
+    
+    .image-container h3 {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        margin: 0;
+        text-align: center;
+        border-radius: 10px 10px 0 0;
+        font-size: 1.3rem;
+        z-index: 1;
+    }
+    
+    .left-img-container {
+        animation: slideInLeft 1s ease-out 0.3s both;
+    }
+    
+    .right-img-container {
+        animation: slideInRight 1s ease-out 0.3s both;
+    }
+    
+    img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition: transform 0.5s ease;
+        border: none !important;
+        margin-bottom: 0 !important;
+    }
+    
+    img:hover {
+        transform: scale(1.05);
+    }
+    
+    .volume-form {
+        background: rgba(8, 18, 35, 0.60);
+        border-radius: 15px;
+        padding: 25px;
+        margin-top: 30px;
+        animation: fadeInUp 1s ease-out 0.6s both;
+        border: 1px solid rgba(0, 170, 255, 0.25);
+    }
+    
+    .form-group label {
+        color: #00aaff;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    
+    .form-control {
+        background: rgba(4, 12, 26, 0.72);
+        border: 1px solid rgba(0, 170, 255, 0.25);
+        color: white;
+        border-radius: 10px;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        background: rgba(0, 0, 0, 0.5);
+        border-color: #00aaff;
+        box-shadow: 0 0 15px rgba(0, 170, 255, 0.3);
+    }
+    
+    .form-text {
+        color: rgba(180, 225, 255, 0.80) !important;
+    }
+    
+    .section-title {
+        text-align: center;
+        margin-bottom: 20px;
+        position: relative;
+        padding-bottom: 15px;
+        color: white;
+    }
+    
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #00aaff, transparent);
+    }
+    
+    .btn-calculate {
+        padding: 12px 25px;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-top: 20px !important;
+    }
+    
+    .btn-calculate i {
+        margin-right: 8px;
+    }
+</style>
+
+<div class="results-container">
+    <h2 class="section-title animate__animated animate__fadeInDown">Oil Spill Analysis Results</h2>
+    
+    <div class="area-display">
+        <i class="fas fa-ruler-combined mr-2"></i> Area of Oil Spill: {{ area }} square meters
+    </div>
+
+    <!-- Display Images -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="image-container left-img-container">
+                <h3><i class="fas fa-images mr-2"></i>Original/Segmented View</h3>
+                <img src="{{ segmented_image }}" alt="Segmented Image" class="img-fluid">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="image-container right-img-container">
+                <h3><i class="fas fa-oil-can mr-2"></i>Oil Detection</h3>
+                <img src="{{ overlay_image }}" alt="Overlay Image" class="img-fluid">
+            </div>
+        </div>
+    </div>
+
+    <div class="volume-form">
+        <h3 class="section-title"><i class="fas fa-flask mr-2"></i>Volume Calculation</h3>
+        <form method="POST" action="{{ url_for('calculate_volume') }}" class="mb-3">
+            <input type="hidden" name="area" value="{{ area }}">
+            <input type="hidden" name="segmented_image" value="{{ segmented_image }}">
+            <input type="hidden" name="overlay_image" value="{{ overlay_image }}">
+            <input type="hidden" name="oil_type" value="{{ oil_type | default('crude') }}">
+            <div class="form-group mb-4">
+                <label for="thickness"><i class="fas fa-arrows-alt-v mr-2"></i>Oil Thickness (micrometers):</label>
+                <input type="number" class="form-control" id="thickness" name="thickness" value="1" min="0.1" step="0.1">
+                <small class="form-text text-muted">Default is 1 micrometer (μm). Adjust based on your knowledge of the spill conditions.</small>
+            </div>
+            <div class="form-group">
+                <label for="units"><i class="fas fa-balance-scale mr-2"></i>Select Volume Units:</label>
+                <select class="form-control" name="units" id="units">
+                    <option value="cubic_meters">Cubic Meters</option>
+                    <option value="gallons">Gallons</option>
+                    <option value="both">Both</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block mt-4 btn-calculate">
+                <i class="fas fa-calculator"></i> Calculate Volume
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %} 
