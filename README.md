@@ -162,7 +162,6 @@ D Priyansh
 
 College: Vasavi College of Engineering Hackathon: HACK YOUR PATH 7.0
 
-Mobile: +91 9959583328
 
 Acknowledgements
 HITAM Hackathon Club
