@@ -102,7 +102,7 @@ CONFIDENCE_THRESHOLD = 0.85
 # =============================================================================
 # Chatbot – OpenRouter powered assistant with conversation history
 # =============================================================================
-# OPENROUTER_API_KEY = "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"
+# OPENROUTER_API_KEY = "replace_with_your_API_key"
 OPENROUTER_API_KEY = "REPLACE_WITH_ENV_VAR_OR_CONFIG"
 OPENROUTER_URL     = "https://openrouter.ai/api/v1/chat/completions"
 CHAT_MODEL         = "deepseek/deepseek-chat"
@@ -834,7 +834,7 @@ def signup():
         if phone and not phone.startswith('+'):
             phone = '+' + phone
         if phone and not re.fullmatch(r'\+[1-9]\d{6,14}', phone):
-            flash('Phone must be in international format, e.g. +919959583328', 'danger')
+            flash('Phone must be in international format, e.g. +91XXXXXXXX', 'danger')
             return render_template('signup.html')
         try:
             db = get_db()
@@ -1064,7 +1064,7 @@ def upload_sar():
     file.save(file_path)
 
     try:
-        rf         = Roboflow(api_key="2YQXWnYr8GzfpiemnPRm")
+        rf         = Roboflow(api_key="use_your_API_key")
         project    = rf.workspace().project("oil-spill-yolo")
         rf_model   = project.version(1).model
         prediction = rf_model.predict(file_path)
@@ -1219,3 +1219,4 @@ def marine_test():
 # =============================================================================
 if __name__ == '__main__':
     app.run(debug=False, port=5002)
+
